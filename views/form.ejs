@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-side Validation Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>✨ Create Account</h1>
+        <p class="subtitle">
+          Join our community with secure server-side validation powered by Express.
+        </p>
+        <form action="/register" method="POST" novalidate>
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              value="<%= data.fullName ? data.fullName : '' %>"
+              aria-describedby="fullName-error"
+              required
+            />
+            <% if (errors.fullName) { %>
+            <p id="fullName-error" class="error"><%= errors.fullName.msg %></p>
+            <% } %>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value="<%= data.email ? data.email : '' %>"
+              aria-describedby="email-error"
+              required
+            />
+            <% if (errors.email) { %>
+            <p id="email-error" class="error"><%= errors.email.msg %></p>
+            <% } %>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              aria-describedby="password-error"
+              required
+            />
+            <% if (errors.password) { %>
+            <p id="password-error" class="error"><%= errors.password.msg %></p>
+            <% } %>
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              aria-describedby="confirmPassword-error"
+              required
+            />
+            <% if (errors.confirmPassword) { %>
+            <p id="confirmPassword-error" class="error">
+              <%= errors.confirmPassword.msg %>
+            </p>
+            <% } %>
+          </div>
+
+          <div class="field">
+            <label for="age">Age</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value="<%= data.age ? data.age : '' %>"
+              aria-describedby="age-error"
+              min="18"
+              max="120"
+            />
+            <% if (errors.age) { %>
+            <p id="age-error" class="error"><%= errors.age.msg %></p>
+            <% } %>
+          </div>
+
+          <div class="field field-checkbox">
+            <input
+              type="checkbox"
+              id="terms"
+              name="terms"
+              <%= data.terms ? 'checked' : '' %>
+              aria-describedby="terms-error"
+            />
+            <label for="terms">I agree to the terms and conditions</label>
+          </div>
+          <% if (errors.terms) { %>
+          <p id="terms-error" class="error"><%= errors.terms.msg %></p>
+          <% } %>
+
+          <button type="submit" class="btn">Create Account</button>
+        </form>
+      </section>
+    </main>
+    
+    <script>
+      // Enhanced form interactions
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const submitBtn = document.querySelector('.btn');
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="number"]');
+        
+        // Add loading state on form submission
+        form.addEventListener('submit', function() {
+          submitBtn.classList.add('loading');
+          submitBtn.textContent = 'Creating Account...';
+        });
+        
+        // Add focus animations and validation feedback
+        inputs.forEach(input => {
+          input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+          });
+          
+          input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+            if (this.value.trim() !== '') {
+              this.parentElement.classList.add('has-value');
+            } else {
+              this.parentElement.classList.remove('has-value');
+            }
+          });
+          
+          // Real-time validation feedback
+          input.addEventListener('input', function() {
+            const field = this.parentElement;
+            const errorElement = field.querySelector('.error');
+            
+            if (!errorElement && this.value.trim() !== '') {
+              if (this.checkValidity()) {
+                field.classList.add('success');
+                field.classList.remove('error');
+              } else {
+                field.classList.remove('success');
+              }
+            }
+          });
+        });
+        
+        // Add smooth scroll to first error
+        const firstError = document.querySelector('.error');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Add keyboard navigation enhancements
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && e.target.type !== 'submit') {
+            e.preventDefault();
+            const formElements = Array.from(form.elements);
+            const currentIndex = formElements.indexOf(e.target);
+            const nextElement = formElements[currentIndex + 1];
+            if (nextElement) {
+              nextElement.focus();
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+

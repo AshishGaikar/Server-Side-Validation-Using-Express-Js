@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .success-icon {
+        font-size: 4rem;
+        text-align: center;
+        margin-bottom: 1rem;
+        animation: bounce 1s ease-in-out;
+      }
+      
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-20px);
+        }
+        60% {
+          transform: translateY(-10px);
+        }
+      }
+      
+      .card-success {
+        border-top: 6px solid #4caf50;
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(255, 255, 255, 0.95));
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section class="card card-success">
+        <div class="success-icon">🎉</div>
+        <h1>Welcome Aboard!</h1>
+        <p class="subtitle">
+          Fantastic, <strong><%= fullName %></strong>! Your account has been created successfully.
+        </p>
+        <p class="body-text">
+          We've sent a confirmation email to <strong><%= email %></strong>. 
+          Check your inbox and get ready to explore!
+        </p>
+        <a class="btn" href="/">✨ Create Another Account</a>
+      </section>
+    </main>
+  </body>
+</html>
+
